@@ -1,0 +1,172 @@
+{
+    // 添加希望被忽略的文件,这样一些文件虽然存在于当前工作目录下,但是不会被显示在左侧的文件浏览器里
+    "files.exclude": {
+      // dSYM文件具有调试信息,普通使用的话不看到它就可以了
+      "**/*.dSYM": true,
+      "**/*.out": true,
+    },
+    // --------------------------------------------------------------------------------------
+    // Code Runner
+    // To run code:
+    //   use shortcut "Ctrl Opt N" *
+    //   or press F1 and then select/type Run Code,
+    //   or right click the Text Editor and then click Run Code in editor context menu
+    //   or click Run Code button in editor title menu
+    //   or click Run Code button in context menu of file explorer
+    // To stop the running code:
+    //   use shortcut "Ctrl Opt M" *
+    //   or press F1 and then select/type Stop Code Run
+    //   or right click the Output Channel and then click Stop Code Run in context menu
+    "code-runner.executorMap": {
+      // Introduction:
+      //   Make sure the executor PATH of each language is set in the environment variable.
+      //   You could also add entry into "code-runner.executorMap" to set the executor PATH.
+      // Supported customized parameters:
+      //   $workspaceRoot: The path of the folder opened in VS Code
+      //   $dir: The directory of the code file being run
+      //   $fullFileName: The full name of the code file being run
+      //   $fileName: The base name of the code file being run, that is the file without the directory
+      //   $fileNameWithoutExt: The base name of the code file being run without its extension
+      /* ------ 编译、运行只有一个文件的cpp文件 ------ */
+      // 注：路径中有空格不会出现问题
+      // 默认程序"cpp": "g++ $fullFileName -o $dir\"$fileNameWithoutExt\"\".out\" -W -Wall -O2 -std=c++17 && $dir\"$fileNameWithoutExt\"\".out\"",
+      "cpp": "mpic++ $fullFileName -I/opt/homebrew/Cellar/boost/1.76.0/include  -L /opt/homebrew/Cellar/boost-mpi/1.76.0/lib -lboost_mpi -lboost_serialization -L/opt/homebrew/Cellar/boost/1.76.0/lib  -o $dir\"$fileNameWithoutExt\"\".out\" -W -Wall -O2 -std=c++17 && mpirun -np 3 $dir\"$fileNameWithoutExt\"\".out\"",
+      // 其中 $fullFileName 是绝对路径，是主文件
+      // 自己决定是否加入 && rm $dir\"$fileNameWithoutExt\"\".out\"（也可以添加"files.exclude"）
+      /* ------ 编译、运行多个cpp文件 ------ */
+      // "cpp": "g++ $fullFileName <file_to_link> -o $dir\"$fileNameWithoutExt\"\".out\" -W -Wall -O2 -std=c++17 && $dir\"$fileNameWithoutExt\"\".out\"",
+      // <file_to_link>的写法：
+      //   一般的，你也可以直接写绝对路径
+      //     \"/path/xxxx.cpp\"
+      //   如果你链接的cpp文件和主文件在一个目录下：
+      //     $dir\"xxxx.cpp\"
+      //   更一般的，如果你链接的cpp文件不和主文件在一个目录下，需要从当前VSCode的工作目录补充相对路径从而形成绝对路径：
+      //     $workspaceRoot\"relative/path/xxxx.cpp\"
+      /* ------ 编译c文件 ------ */
+      "c": "gcc $fullFileName -o $dir\"$fileNameWithoutExt\"\".out\" -W -Wall -O2 -std=c17 && $dir\"$fileNameWithoutExt\"\".out\"",
+      // "c": "gcc $fullFileName <file_to_link> -o $dir\"$fileNameWithoutExt\"\".out\" -W -Wall -O2 -std=c17 && $dir\"$fileNameWithoutExt\"\".out\"",
+    },
+    // Whether to clear previous output before each run (default is false):
+    "code-runner.clearPreviousOutput": true,
+    // Whether to save all files before running (default is false):
+    "code-runner.saveAllFilesBeforeRun": false,
+    // Whether to save the current file before running (default is false):
+    "code-runner.saveFileBeforeRun": true,
+    // Whether to show extra execution message like [Running] ... and [Done] ... (default is true):
+    "code-runner.showExecutionMessage": true, // cannot see that message is you set "code-runner.runInTerminal" to true
+    // Whether to run code in Integrated Terminal (only support to run whole file in Integrated Terminal, neither untitled file nor code snippet) (default is false):
+    "code-runner.runInTerminal": true, // cannot input data when setting to false
+    // Whether to preserve focus on code editor after code run is triggered (default is true, the code editor will keep focus; when it is false, Terminal or Output Channel will take focus):
+    "code-runner.preserveFocus": false,
+    // Whether to ignore selection to always run entire file. (Default is false)
+    "code-runner.ignoreSelection": true,
+    "editor.tabSize": 4,
+    "C_Cpp.clang_format_fallbackStyle": "Google",
+    "lldb.displayFormat": "auto",
+    "lldb.dereferencePointers": true,
+    "files.autoGuessEncoding": true,
+    "files.associations": {
+      "*.COBOL*": "cobol",
+      "*.COB*": "cobol",
+      "*.COBCOPY*": "cobol",
+      "*.COPYBOOK*": "cobol",
+      "*.COPY*": "cobol",
+      "*.PL1*": "pl1",
+      "*.PLI*": "pl1",
+      "*.INC*": "pl1",
+      "*.INCLUDE*": "pl1",
+      "*.JCL*": "jcl",
+      "*.ASM*": "hlasm",
+      "*.ASSEMBLE*": "hlasm",
+      "*.HLASM*": "hlasm",
+      "*.HLA*": "hlasm",
+      "*.MACLIB*": "hlasm",
+      "*.EXEC*": "rexx",
+      "*.REXX*": "rexx",
+      "*.REXXINC*": "rexx",
+      "*.copyasm": "hlasm",
+      "*.macasm": "hlasm",
+      "*.bms": "hlasm",
+      "*.rex": "rexx",
+      "*.rexx": "rexx",
+      "cstdio": "cpp",
+      "cstring": "cpp",
+      "unordered_set": "cpp",
+      "vector": "cpp",
+      "iosfwd": "cpp",
+      "iterator": "cpp",
+      "unordered_map": "cpp",
+      "algorithm": "cpp",
+      "iostream": "cpp",
+      "ostream": "cpp",
+      "__bit_reference": "cpp",
+      "__hash_table": "cpp",
+      "__split_buffer": "cpp",
+      "array": "cpp",
+      "deque": "cpp",
+      "filesystem": "cpp",
+      "initializer_list": "cpp",
+      "string": "cpp",
+      "string_view": "cpp",
+      "map": "cpp",
+      "random": "cpp",
+      "__config": "cpp",
+      "__debug": "cpp",
+      "__errc": "cpp",
+      "__functional_base": "cpp",
+      "__locale": "cpp",
+      "__mutex_base": "cpp",
+      "__node_handle": "cpp",
+      "__nullptr": "cpp",
+      "__string": "cpp",
+      "__threading_support": "cpp",
+      "__tree": "cpp",
+      "__tuple": "cpp",
+      "atomic": "cpp",
+      "bit": "cpp",
+      "bitset": "cpp",
+      "cctype": "cpp",
+      "chrono": "cpp",
+      "clocale": "cpp",
+      "cmath": "cpp",
+      "complex": "cpp",
+      "cstdarg": "cpp",
+      "cstddef": "cpp",
+      "cstdint": "cpp",
+      "cstdlib": "cpp",
+      "ctime": "cpp",
+      "cwchar": "cpp",
+      "cwctype": "cpp",
+      "exception": "cpp",
+      "fstream": "cpp",
+      "functional": "cpp",
+      "iomanip": "cpp",
+      "ios": "cpp",
+      "istream": "cpp",
+      "limits": "cpp",
+      "list": "cpp",
+      "locale": "cpp",
+      "memory": "cpp",
+      "mutex": "cpp",
+      "new": "cpp",
+      "numeric": "cpp",
+      "optional": "cpp",
+      "ratio": "cpp",
+      "sstream": "cpp",
+      "stack": "cpp",
+      "stdexcept": "cpp",
+      "streambuf": "cpp",
+      "system_error": "cpp",
+      "tuple": "cpp",
+      "type_traits": "cpp",
+      "typeinfo": "cpp",
+      "utility": "cpp",
+      "*.ipp": "cpp",
+      "set": "cpp",
+      "typeindex": "cpp",
+      "variant": "cpp"
+    },
+    "git.ignoreLimitWarning": true,
+    // --------------------------------------------------------------------------------------
+  }
+  
